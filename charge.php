@@ -6,33 +6,46 @@
 </head> 
 
 <body>
-
-<h1>Register User</h1>
+<?php
+	session_start();
+?>
+<h1>Charge</h1>
 
 <form>
 
-	First name:<br>
-  	<input type="text" name="firstname" value="Arturo"><br>
+	Consumer:<br>
+  	<input type="text" name="consumer" value="<?php echo $_SESSION["user"]; ?>"><br>
 
-  	Last Name:<br>
-  	<input type="text" name="lastname" value="Verbel"><br>
+	Credit Card:<br>
+  	<input type="text" name="creditCard" value="<?php echo $_SESSION["tokenAsociate"]; ?>"><br>
 
-  	Email:<br>
-  	<input type="text" name="email" value="arturo-verbel@hotmail.com"><br>
+  	Currency:<br>
+  	<input type="text" name="currency" value="COP"><br>
 
-  	Gender:<br>
-  	<input type="text" name="gender" value="M"><br>
+  	Amount:<br>
+  	<input type="text" name="amount" value="100000"><br>
 
-  	Phone:<br>
-  	<input type="text" name="phone" value="3163386191"><br>
+  	Tax Amount:<br>
+  	<input type="text" name="taxAmount" value="0"><br>
 
-  	Address:<br>
-  	<input type="text" name="address" value="Carrera 25 # 67-56"><br>
+  	<br><input type="button" value="Submit" id="send">
+<br><br><hr>
+  	<?php
+			session_start();
 
-  	City:<br>
-  	<input type="text" name="email" disabled value="Bogota DC"><br>
-  	<hr>
-  	<input type="button" value="Submit" id="senduser">
+			echo "User: ";
+			echo "<b>" . $_SESSION["user"] . "</b>";
+			echo "<br>";
+			echo "Credit  Card Token: ";
+			echo "<b>" . $_SESSION["creditCard"] . "</b>";
+			echo "<br>";
+			echo "Token Asociate: ";
+			echo "<b>" . $_SESSION["tokenAsociate"] . "</b>";
+			echo "<br>";
+			echo "Charge: ";
+			echo "<b>" . $_SESSION["charge"] . "</b>";
+
+		?>
 
 </form>
 
@@ -41,9 +54,10 @@
 	var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9+/=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/rn/g,"n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
 
 
-		var url = "https://sandbox.tpaga.co/api/customer";
+		var url = "https://sandbox.tpaga.co/api/charge/credit_card";
 
 		var token_private = "q4aemlu3206j3qjmvbhkikg2rdemf833";
+		var token_public = "34alvi0ogiapf6d02n8mcqj8g28nbid0";
 		var password = "TPag0$Arturo";
 
 		var tokenPP = token_private + ":" + password;
@@ -51,40 +65,52 @@
 		$crypt0 = Base64.encode(tokenPP);
 
 
-	$('#senduser').click(function(){
+	$('#send').click(function(){
 
-		var user = {
-			  "firstName": $("input[name='firstname']").val(),
-			  "lastName": $("input[name='lastname']").val(),
-			  "email": $("input[name='email']").val(),
-			  "gender": $("input[name='gender']").val(),
-			  "phone": $("input[name='phone']").val(),
-			  "address": {
-			    "addressLine1": $("input[name='address']").val(),
-			    "addressLine2": $("input[name='address']").val(),
-			    "postalCode": "110111",
-			    "city": {
-			      "name": "Bogotá",
-			      "state": "DC",
-			      "country": "CO"
-			    }
+		var tokenPP = token_private + ":" + password;
+		$crypt0 = Base64.encode(tokenPP);
+
+		var data = {
+			  "customer": $("input[name='consumer']").val(),
+			  "amount": $("input[name='amount']").val(),
+			  "taxAmount": $("input[name='taxAmount']").val(),
+			  "currency": $("input[name='currency']").val(),
+			  "creditCard": $("input[name='creditCard']").val(),
+			  "installments": 1,
+			  "orderId": "123",
+			  "iacAmount": 0,
+			  "tipAmount": 0,
+			  "description": "Este pago y tales",
+			  "thirdPartyId": "Taxi Driver",
+			  "paid": true,
+			  "paymentTransaction": "string",
+			  "errorCode": "Codigo Error - ",
+			  "errorMessage": "Mensaje error",
+			  "reteRentaAmount": "1000",
+			  "reteIcaAmount": "1000",
+			  "reteIvaAmount": "1000",
+			  "tpagaFeeAmount": "5000",
+			  "transactionInfo": {
+			    "authorizationCode": "1",
+			    "status": "authorized"
 			  }
 		}
+
+		var url = "https://sandbox.tpaga.co/api/charge/credit_card";
 
 		var request = $.ajax({
 		  url: url,
 		  method: "POST",
-		  data: JSON.stringify(user),
-		  crossDomain: true,
+		  data: JSON.stringify(data),
 		  beforeSend: function(xhr) {
 		    	xhr.setRequestHeader('Authorization', 'Basic ' + $crypt0);
 		  },
-		  contentType: "application/json;charset=UTF-8",
+		  contentType: "application/json",
 		  dataType: "application/json"
 		});
 		 
 		request.done(function( msg ) {
-		  $( "#log" ).html( msg );
+		  console.log( msg );
 		});
 		 
 		request.fail(function( jqXHR, textStatus ) {
@@ -92,19 +118,14 @@
 		});
 
 		request.always(function(a) {
-			save( jQuery.parseJSON( a.responseText ) );
+			var data = jQuery.parseJSON( a.responseText );
+			$.get( "save.php?field=charge&data=" + data.id, function( data ) {
+			  	alert( "Saved." );
+			  	window.location.href = "index.php";
+			});
 	 	});
 
-
 	});
-
-	function save( data ){
-		$.get( "save.php?field=user&data=" + data.id, function( data ) {
-		  	alert( "Saved." );
-		  	window.location.href = "index.php";
-		});
-
-	}
 
 
 
