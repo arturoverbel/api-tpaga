@@ -20,6 +20,9 @@
 			echo "<br>";
 			echo "Credit  Card Token: ";
 			echo "<b>" . $_SESSION["creditCard"] . "</b>";
+			/*echo "<br>";
+			echo "Merchant: ";
+			echo "<b>" . $_SESSION["merchant"] . "</b>";*/
 			echo "<br>";
 			echo "Token Asociate: ";
 			echo "<b>" . $_SESSION["tokenAsociate"] . "</b>";
