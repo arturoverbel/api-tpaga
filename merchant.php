@@ -13,6 +13,9 @@
 
 <form>
 
+	Consumer:<br>
+  	<input type="text" name="consumer" value="<?php echo $_SESSION["user"]; ?>"><br>
+
   	<br><input type="button" value="Submit" id="send">
 <hr>
   	<?php
