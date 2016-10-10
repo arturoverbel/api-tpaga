@@ -71,7 +71,7 @@
 			    "countyCode": "CO",
 			    "phone": "3163386191"
 			  }
-			}
+			};
 
 		var request = $.ajax({
 		  url: url,
@@ -82,7 +82,7 @@
 		    	xhr.setRequestHeader('Authorization', 'Basic ' + $crypt0);
 		  },
 		  contentType: "application/json;charset=UTF-8",
-		  dataType: "application/json"
+		  dataType: "application/json;charset=UTF-8"
 		});
 		 
 		request.done(function( msg ) {
