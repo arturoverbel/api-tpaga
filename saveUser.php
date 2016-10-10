@@ -1,6 +1,0 @@
-<?php
-
-	$data = $POST['user'];
-
-	
-	
