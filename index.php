@@ -1,6 +1,7 @@
 <html>
 	<head>
-	<meta charset="UTF-8">
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="common.js"></script>
 	</head>
 	<body>
 
@@ -26,9 +27,14 @@
 			echo "Charge: ";
 			echo "<b>" . $_SESSION["charge"] . "</b>";
 
-		?>
+		?><br><br><br><br><br>
+<hr>
+	<a href="https://sandbox.tpaga.co/merchantDashboard/index" target="_blank">Dashboard</a><br>
+	User: <b>arturo-verbel@hotmail.com</b><br>
+	Password: <script>document.write(password);</script><br><br>
 
-
+	Token Private: <script>document.write(token_private);</script><br>
+	Token Public: <script>document.write(token_public);</script><br>
 	</body>
 
 </html>
